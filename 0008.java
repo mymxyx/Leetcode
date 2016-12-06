@@ -10,10 +10,6 @@ class Node{
 }
 public class MaxSubtree {
 
-	public static double count;
-	public static double sum;
-	public static double ave;
-	public static Node result;
 	
 	public static void main(String[] args){
 		Node root = new Node(1);
@@ -37,109 +33,59 @@ public class MaxSubtree {
 		c.array.add(h);
 		c.array.add(i);
 		
-		tranversel(root);
-		System.out.println("ave: "+ave);
-		System.out.println("result node: "+result.val);
+		Double[] ave = new Double[1];
+		ave[0] = 0.0;
 		
-/*		
-		double ave = Integer.MIN_VALUE;
+		Node[] node = new Node[1];
 		
-		lastresult = null;
-		Node so = findmaxave(root,ave);
-		System.out.println("so?" + so);
-		if(lastresult != null){
-			System.out.println("lastresult: "+lastresult.val);
-		}
+		tranversel(root,ave,node);
 		
-		*/
+		System.out.println("ave: "+ave[0]);
+		System.out.println("result node: "+node[0].val);
+		
+
 	}	
-	public static void tranversel(Node r){
+	public static void tranversel(Node r,Double[] ave,Node[] node){
 		if(r== null ||r.array.size()==0){
 			return;
 		}
-		count = 0.0;
-		sum = 0.0;
-		helper(r);
-//		System.out.println("sum: "+sum);
-//		System.out.println("count:"+count);
-		if(ave<sum/count){
+		
+		Double ret[] = new Double[2];
+		ret[0] = 0.0;
+		ret[1] = 0.0;
+		
+		helper(r,ret);
+		
+		Double sum = ret[1];
+		Double count = ret[0];
+		System.out.println("sum: "+sum);
+		System.out.println("count:"+count);
+		if(ave[0] < sum/count){
 
-			ave = sum/count;
-			result = r;
+			ave[0] = sum/count;
+			node[0] = r;
 		}
-//		System.out.println("ave:"+ave);
+
 		if(r.array.size()!=0){
 			for(int i = 0;i<r.array.size();i++){
-				tranversel(r.array.get(i));
+				tranversel(r.array.get(i),ave,node);
 			}
 		}
 	}
 	
-	public static void helper(Node r){
+	public static void helper(Node r,Double[] ret){
 		if(r ==null ){
 			return;
 		}
-		count++;
-		sum += r.val;
+		ret[0] = ret[0]+1;
+		ret[1] += r.val;
 		if(r.array.size()!=0){
 			for(int i = 0;i<r.array.size();i++){
-				helper(r.array.get(i));
+				helper(r.array.get(i),ret);
 			}
 		}
+
 		
 	}
 
-/*	
-	public static Node findmaxave(Node root,double ave){
-//		System.out.println("in findmaxave: "+root.val);
-		
-		Node ret = null;
-		if(root == null || root.array.size()==0){
-			return null;
-		}
-		sum = 0;
-		count = 0;
-		helper(root);
-		double result = sum/count;
-		System.out.println("result: "+result);
-		if(result > ave){
-			
-			ave = result;
-			ret = root;
-			lastresult = root;
-			System.out.println("new ave: "+ave);
-			System.out.println("new return: "+root.val);
-		}
-		if(root.array.size()==0){
-		}
-		else{
-			for(Node n:root.array){
-				Node ret2 = findmaxave(n,ave);
-				if(ret2 != null);
-				ret = ret2; 
-				}
-		}
-		return ret;
-	}
-	
-	public static void helper(Node root){
-		count++;
-		if(root == null ){
-			return ;
-		}
-		System.out.println("in helper: "+root.val);
-		if(root!= null){
-			sum += root.val;
-			System.out.println("count: "+count);
-			System.out.println("sum: "+sum);
-		}
-		if(root.array.size()!= 0){
-			for(Node n :root.array){
-				helper(n);
-			}
-		}
-		
-		return ;
-	}
-*/
 }
